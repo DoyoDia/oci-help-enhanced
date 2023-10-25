@@ -360,6 +360,7 @@ func listInstances() {
 									} else {
 										fmt.Printf("\033[1;32m实例 %s 启动成功.\033[0m\n", *ins.DisplayName)
 										var msgErr error
+										var text string
 										text = fmt.Sprintf("实例 %s 启动成功.", *ins.DisplayName)
 										_ , msgErr = sendMessage("", text)
 										if err != nil {
