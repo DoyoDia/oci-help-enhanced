@@ -349,6 +349,29 @@ func listInstances() {
 					_, err := instanceAction(ins.Id, core.InstanceActionActionStart)
 					if err != nil {
 						fmt.Printf("\033[1;31m实例 %s 启动失败.\033[0m %s\n", *ins.DisplayName, err.Error())
+						fmt.Printf("是否开启循环启动尝试？(输入 y 并回车): ")
+						fmt.Scanln(&input)
+						if strings.EqualFold(input, "y") {
+							for {
+								for _, ins := range instances {
+									_, err := instanceAction(ins.Id, core.InstanceActionActionStart)
+									if err != nil {
+										fmt.Printf("\033[1;31m实例 %s 启动失败了❌.\033[0m %s\n", *ins.DisplayName, err.Error())
+									} else {
+										fmt.Printf("\033[1;32m实例 %s 启动成功.\033[0m\n", *ins.DisplayName)
+										var msgErr error
+										text = fmt.Sprintf("实例 %s 启动成功.", *ins.DisplayName)
+										_ , msgErr = sendMessage("", text)
+										if err != nil {
+											printlnErr("Telegram 消息提醒发送失败", msgErr.Error())
+										}
+										break
+									}
+								}
+							}
+						} else {
+							continue
+						}
 					} else {
 						fmt.Printf("\033[1;32m实例 %s 启动成功.\033[0m\n", *ins.DisplayName)
 					}
