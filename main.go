@@ -368,6 +368,12 @@ func listInstances() {
 										}
 										break
 									}
+									// 设置随机数种子，确保每次运行时生成的随机数不同
+									rand.Seed(time.Now().UnixNano())
+									// 生成一个20到40的随机数
+									delay := rand.Intn(21) + 20
+									delayDuration := time.Duration(delay) * time.Second
+									time.Sleep(delayDuration)
 								}
 							}
 						} else {
